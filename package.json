@@ -1,7 +1,6 @@
 {
   "name": "abstract-site",
   "version": "1.0.0",
-  "description": "",
   "main": "src/index.js",
   "scripts": {
     "test": "jest",
@@ -28,5 +27,6 @@
     "eslint-plugin-prettier": "^3.4.1",
     "jest": "^27.3.1",
     "prettier": "^2.5.1"
-  }
+  },
+  "description": ""
 }

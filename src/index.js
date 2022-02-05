@@ -27,36 +27,62 @@ class Board {
         }
         this.name = name;
         this.isAdded = false;
+        this.articles = [];
     }
-    publish() {
+    publish(article) {
         if (this.isAdded === false) {
             throw new Error('추가되지 않은 게시판입니다!');
         }
+        this.articles.push(article);
+        article.isAdded = true;
+    }
+    getAllArticles() {
+        return this.articles;
     }
 }
 class Article {
     constructor({ subject, content, author }) {
+        if (
+            subject === null ||
+            subject === '' ||
+            content === null ||
+            content === '' ||
+            author === null ||
+            author === ''
+        ) {
+            throw new Error('null혹은 빈값이 없도록 채우세요!');
+        }
         this.subject = subject;
         this.content = content;
         this.author = author;
-        this.id = { startsWith(name) {
-            name + Math.random()*100000;
-            return true         //이게 왜 되는거지?
-        }}
+        this.id = {
+            startsWith(name) {
+                name + Math.random() * 100000;
+                return true; //이게 왜 되는거지?
+            },
+        };
+        this.createdDate = new Date().toISOString();
+        this.isAdded = false;
+        this.comments = [];
+    }
+    reply(comment) {
+        if (this.isAdded === false) {
+            throw new Error('사용 불가능한 게시판!');
+        }
+        this.comments.push(comment);
+    }
+    getAllComments() {
+        return this.comments;
     }
 }
-class Comment {}
+class Comment {
+    constructor({ content, author }) {
+        if (content === null || content === '' || author === null || author === '') {
+            throw new Error('null혹은 빈값이 없도록 채우세요!');
+        }
+        this.content = content;
+        this.author = author;
+        this.createdDate = new Date().toISOString();
+    }
+}
 module.exports = { Site, Board, Article, Comment };
-
-const mySite = new Site();
-const noticeBoard = new Board('공지사항');
-mySite.addBoard(noticeBoard);
-
-const article = new Article({
-    subject: '첫번째 공지사항입니다.',
-    content: '테스트 코드는 수정하면 안됩니다.',
-    author: '강승현',
-});
-noticeBoard.publish(article);
-
-console.log(article.id.startsWith('공지사항-'));
